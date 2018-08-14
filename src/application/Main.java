@@ -7,21 +7,34 @@ import javafx.scene.layout.BorderPane;
 
 
 public class Main extends Application {
-	@Override
-	public void start(Stage primaryStage) {
-		try {
-			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,800,800);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setScene(scene);
-			primaryStage.setResizable(true);
-			primaryStage.show();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+	@Override
+	public void start(Stage primaryStage) {
+		try {
+			//Welcome Menu 
+			//Creating the layout
+			BorderPane root = new BorderPane();
+			Scene scene = new Scene(root,800,800);
+			
+			//add background photo
+			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			
+			//Press any key to continue feature go to M
+			scene.setOnKeyPressed(e -> System.out.println("Test"));
+			scene.setOnMousePressed(e ->System.out.println("Test" ));
+			
+			//Show the scene 
+			primaryStage.setScene(scene);
+			primaryStage.setResizable(false);//Cant resized
+			primaryStage.show();
+			
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
