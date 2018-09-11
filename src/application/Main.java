@@ -1,5 +1,6 @@
 package application;
 
+import java.awt.TextField;
 import java.nio.file.Paths;
 
 import javafx.application.Application;
@@ -25,13 +26,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+
+
 public class Main extends Application {
 
 	static final double VOLUME = 0.07;
 	ToggleGroup gameGroup;
 	MediaPlayer mediaPlayer;
 	Media hit;
-	
 
 	public static void main(String[] args) {
 		launch(args);
@@ -42,17 +44,21 @@ public class Main extends Application {
 		try {
 			// Welcome Menu
 
-			// Creating the Welcome Menu scene
+			// 0.Creating the Welcome Menu scene
 			BorderPane welcomePane = new BorderPane();
 			Scene welocmeScene = new Scene(welcomePane, 800, 800);
 
-			// Select tool scene
+			// 1.Select tool scene
 			BorderPane toolPane = new BorderPane();
 			Scene toolScene = new Scene(toolPane, 800, 800);
 
-			// Class optimizer Scene
+			// 2.Class optimizer Scene
 			BorderPane optimizerPane = new BorderPane();
 			Scene optimizerScene = new Scene(optimizerPane, 800, 800);
+			
+			// 2.a DS3 select stats scene
+			BorderPane selectPane = new BorderPane();
+			Scene selectScene = new Scene(selectPane, 800,800);
 
 			// =======================================================================================================================================================
 
@@ -76,10 +82,12 @@ public class Main extends Application {
 
 			// Button for tools
 			Button optimizerPaneButton = new Button("Class Optimizer");
+
+			// Buttons for back and exit
 			Button backButton = new Button("Back");
 			Button exitButton = new Button("Exit");
 
-			// Tools menu
+			// Tools layout
 			VBox toolsLayout = new VBox();
 			Label selectToolText = new Label("Select Tool");
 			toolsLayout.setSpacing(8);
@@ -87,20 +95,22 @@ public class Main extends Application {
 			toolPane.setCenter(toolsLayout);
 			BorderPane.setMargin(toolsLayout, new Insets(300, 80, 80, 330));
 
-			// Exit and back layout
-			HBox backExit = new HBox();
-			backExit.getChildren().addAll(backButton, exitButton);
-			backExit.setSpacing(8);
-			toolPane.setBottom(backExit);
-			BorderPane.setMargin(backExit, new Insets(120, 80, 80, 600));
-
-			// Event handling buttons
+			// Event handling tools buttons
 			optimizerPaneButton.setOnAction(e -> {
 				// Change the soundtrack
 				mediaPlayer.stop();
 				playSonudtrack("Music/ds3optimizer.mp3");
 				primaryStage.setScene(optimizerScene);
 			});
+
+			// Back and exit layout
+			HBox backExit = new HBox();
+			backExit.getChildren().addAll(backButton, exitButton);
+			backExit.setSpacing(8);
+			toolPane.setBottom(backExit);
+			BorderPane.setMargin(backExit, new Insets(120, 80, 80, 600));
+
+			// Handling the back and exit buttons
 			backButton.setOnAction(e -> primaryStage.setScene(welocmeScene));
 			exitButton.setOnAction(e -> Platform.exit());
 
@@ -108,12 +118,14 @@ public class Main extends Application {
 
 			// Class Optimizer scene
 
-			// Games Menu
+			// Games layout
+
 			// Create radio buttons for games
 			RadioButton ds1Button = new RadioButton("Dark Souls");
 			RadioButton ds2Button = new RadioButton("Dark Souls II");
 			RadioButton ds3Button = new RadioButton("Dark Souls III");
-			// Creating radiobutton groups and ui
+
+			// Creating radiobutton group and layout
 			gameGroup = new ToggleGroup();
 			gameGroup.getToggles().addAll(ds1Button, ds2Button, ds3Button);
 			ds1Button.setSelected(true);
@@ -144,38 +156,104 @@ public class Main extends Application {
 					}
 				}
 			});
-
-			// back exit layout
-			HBox backExit2 = new HBox();
+			
+			// Handling DS3 buttons features
+			selectStatsButton.setOnAction(e -> primaryStage.setScene(selectScene));
+			
+			
+			// Back exit layout
 			Button backButton2 = new Button("Back");
 			Button exitButton2 = new Button("Exit");
+			HBox backExit2 = new HBox();
 			backExit2.getChildren().addAll(backButton2, exitButton2);
 			backExit2.setSpacing(8);
 			optimizerPane.setBottom(backExit2);
-			optimizerPane.setBottom(backExit2);
 			BorderPane.setMargin(backExit2, new Insets(120, 80, 80, 600));
 
-			//Handling back and exit buttons
+			// Handling back and exit buttons
 			backButton2.setOnAction(e -> {
 				mediaPlayer.stop();
 				playSonudtrack("Music/welcomemenu.mp3");
 				primaryStage.setScene(toolScene);
 			});
 			exitButton2.setOnAction(e -> Platform.exit());
-			
+
 			// =======================================================================================================================================================
 
+			//Show a message for the feature
+			
+			Label fetureText = new Label("Enter your stats (0 if you dont care)");
+			fetureText.getStyleClass().add("label1");
+			HBox featureBox = new HBox();
+			featureBox.getChildren().add(fetureText);
+			selectPane.setTop(featureBox);
+			BorderPane.setMargin(featureBox, new Insets(50, 80, 80, 30));
+			
+			//Showing the name of the skills
+			
+			//Labels for skills
+			Label vgrText = new Label ("Vigor");
+			Label attuText = new Label ("Attunement");
+			Label endText = new Label ("Endurance");
+			Label vitText = new Label ("Vitality");
+			Label stgText = new Label ("Strength");
+			Label dexText = new Label ("Dexterity");
+			Label inteText = new Label ("Intelligence");
+			Label fthText = new Label ("Faith");
+			Label lckTect = new Label ("Luck");
+			
+			
+			//Textfiled for stats
+			TextField vgrField = new TextField();
+			TextField attuField = new TextField();
+			TextField endField = new TextField();
+			TextField vitField = new TextField();
+			TextField stgField = new TextField();
+			TextField dexField = new TextField();
+			TextField inteField = new TextField();
+			TextField fthField = new TextField();
+			TextField lckField = new TextField();
+			
+			//Layout for name of the skill and  for textfield of the stats user input here
+			GridPane enterGPane = new GridPane();
+			enterGPane.setVgap(10);
+			enterGPane.setHgap(10);
+			enterGPane.add(vgrText, 0, 0);
+			GridPane.setConstraints(vgrField, 1, 0);
+			
+
+			// Back exit layout
+			Button backButton3 = new Button("Back");
+			Button exitButton3 = new Button("Exit");
+			HBox backExit3 = new HBox();
+			backExit3.getChildren().addAll(backButton3, exitButton3);
+			backExit3.setSpacing(8);
+			selectPane.setBottom(backExit3);
+			BorderPane.setMargin(backExit3, new Insets(120, 80, 80, 600));
+
+			// Handling back and exit buttons
+			backButton3.setOnAction(e -> primaryStage.setScene(optimizerScene));
+			exitButton3.setOnAction(e -> Platform.exit());
+			
+			
+			// ======================================================================================================================================================
+
+			
 			// add custom styles
 			welocmeScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			toolScene.getStylesheets().add(getClass().getResource("MainMenu.css").toExternalForm());
 			optimizerScene.getStylesheets().add(getClass().getResource("MainMenu.css").toExternalForm());
-
+			selectScene.getStylesheets().add(getClass().getResource("Optimizer.css").toExternalForm());
+			
+			
 			// Set and showing the Welocme Menu scene
 			primaryStage.setTitle("Dark Souls Tools");
 			primaryStage.setScene(welocmeScene);
 			primaryStage.setResizable(false);// Cant resized
 			primaryStage.show();
 
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -188,7 +266,7 @@ public class Main extends Application {
 		mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 		mediaPlayer.setVolume(VOLUME);
 		mediaPlayer.play();
-		
+
 	}
 
 	// Event handling radio button fuction
