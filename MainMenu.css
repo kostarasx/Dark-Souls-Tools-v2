@@ -1,0 +1,37 @@
+.root{
+    -fx-background-color: #383838;
+}
+
+.label{
+	-fx-text-fill: #fff;
+   	-fx-font-style: normal;
+   	-fx-font-size: 25px;
+}	
+
+.button {
+	-fx-background-color: #f4511e;
+	-fx-text-fill: #fff;
+	-fx-font-size: 15px;
+	-fx-opacity: 0.7;
+	}
+	
+.button:hover {
+    -fx-opacity: 1;
+    -fx-color: white;
+ 
+}
+
+.radio-button .radio {
+    -fx-border-width: 1.5px;
+    -fx-border-color: #f4511e;
+    -fx-background-color: white;
+    -fx-background-image: null;
+    -fx-border-radius: 15px;
+    -fx-padding: 4px;
+}
+.radio-button {
+
+-fx-font-size: 16px;
+-fx-text-fill: white;
+-fx-border-width: 0px;
+}
