@@ -31,12 +31,14 @@ import javafx.scene.media.MediaPlayer;
 
 public class Main extends Application {
 
-	static final double VOLUME = 0.07;
+	static final double VOLUME = 0;
 	ToggleGroup gameGroup;
 	MediaPlayer mediaPlayer;
 	Media hit;
+	ds3ClassOptimizer ds3class;
 
 	public static void main(String[] args) {
+
 		launch(args);
 	}
 
@@ -56,7 +58,7 @@ public class Main extends Application {
 			// 2.Class optimizer Scene
 			BorderPane optimizerPane = new BorderPane();
 			Scene optimizerScene = new Scene(optimizerPane, 800, 800);
-			
+
 			// 2.a DS3 select stats scene
 			BorderPane selectPane = new BorderPane();
 			Scene selectScene = new Scene(selectPane, 800,800);
@@ -79,7 +81,7 @@ public class Main extends Application {
 
 			// =======================================================================================================================================================
 
-			// Tools scene
+			// Tools scene 
 
 			// Button for tools
 			Button optimizerPaneButton = new Button("Class Optimizer");
@@ -129,7 +131,6 @@ public class Main extends Application {
 			// Creating radiobutton group and layout
 			gameGroup = new ToggleGroup();
 			gameGroup.getToggles().addAll(ds1Button, ds2Button, ds3Button);
-			ds1Button.setSelected(true);
 			Label selectGameText = new Label("                  Select game");
 			HBox gameButtons = new HBox();
 			gameButtons.getChildren().addAll(ds1Button, ds2Button, ds3Button);
@@ -151,17 +152,24 @@ public class Main extends Application {
 					VBox gameBox = new VBox();
 					selectGame.setSpacing(15);
 					if (gameGroup.getSelectedToggle() == ds3Button) {
+						// Setting the ds3 optimizer object
+						ds3class = new ds3ClassOptimizer();
+						ds3class.setBasicStats();
+						ds3class.storeTheBaseStats();
+						ds3class.newLevelCreate();
+						ds3class.newLevelSohrt();
+						//Addig feature buutons
 						gameBox = gameTools(selectStatsButton, editStatsButton, showStartButton);
 						optimizerPane.setCenter(gameBox);
 						BorderPane.setMargin(gameBox, new Insets(80, 80, 80, 290));
 					}
 				}
 			});
-			
+
 			// Handling DS3 buttons features
 			selectStatsButton.setOnAction(e -> primaryStage.setScene(selectScene));
-			
-			
+
+
 			// Back exit layout
 			Button backButton2 = new Button("Back");
 			Button exitButton2 = new Button("Exit");
@@ -181,18 +189,18 @@ public class Main extends Application {
 
 			// =======================================================================================================================================================
 
-			//Show a message for the feature
-			
+			// Show a message for the feature
+
 			Label fetureText = new Label("Enter your stats (0 if you dont care)");
 			fetureText.getStyleClass().add("label1");
 			HBox featureBox = new HBox();
 			featureBox.getChildren().add(fetureText);
 			selectPane.setTop(featureBox);
 			BorderPane.setMargin(featureBox, new Insets(50, 80, 80, 30));
-			
-			//Showing the name of the skills
-			
-			//Labels for skills
+
+			// Showing the name of the skills
+
+			// Labels for skills
 			Label vgrText = new Label ("Vigor");
 			Label attuText = new Label ("Attunement");
 			Label endText = new Label ("Endurance");
@@ -202,9 +210,9 @@ public class Main extends Application {
 			Label inteText = new Label ("Intelligence");
 			Label fthText = new Label ("Faith");
 			Label lckTect = new Label ("Luck");
-			
-			
-			//Textfiled for stats
+
+
+			// Textfiled for stats
 			TextField vgrField = new TextField();
 			TextField attuField = new TextField();
 			TextField endField = new TextField();
@@ -214,16 +222,119 @@ public class Main extends Application {
 			TextField inteField = new TextField();
 			TextField fthField = new TextField();
 			TextField lckField = new TextField();
-			
-			//Layout for name of the skill and  for textfield of the stats user input here
+
+			// Layout for name of the skill and  for textfield of the stats user input here
+
+			// Setting the Grid
 			GridPane enterGPane = new GridPane();
 			enterGPane.setVgap(10);
-			enterGPane.setHgap(10);
+			enterGPane.setHgap(35);
+
+			// Vigor 
 			enterGPane.add(vgrText, 0, 0);
 			enterGPane.add(vgrField, 1, 0);
-			vgrField.setPrefSize(40, 0);
-			vgrField.setMaxWidth(40);
+			textFieldSettings(vgrField);
+			System.out.println();
+			// Extract and edit  user input
+			vgrField.textProperty().addListener((observable, oldValue, newValue) -> {
+				int vgr = Integer.parseInt(newValue);
+				ds3class.newVigor(vgr);
+				ds3class.newLevelSohrt();
+			});
+
+			// Attunement
+			enterGPane.add(attuText, 0, 1);
+			enterGPane.add(attuField, 1, 1);
+			textFieldSettings(attuField);
+			// Extract and edit  user input
+			attuField.textProperty().addListener((observable, oldValue, newValue) -> {
+					int att = Integer.parseInt(newValue);;
+					ds3class.newAttunemen(att);
+					ds3class.newLevelSohrt();
+			});
+
+			// Endurance
+			enterGPane.add(endText, 0, 2);
+			enterGPane.add(endField, 1, 2);
+			textFieldSettings(endField);
+			// Extract and edit  user input
+			endField.textProperty().addListener((observable, oldValue, newValue) -> {
+					int end = Integer.parseInt(newValue);
+					ds3class.newEndurance(end);
+					ds3class.newLevelSohrt();
+		    });
+
+			// Vitality
+			enterGPane.add(vitText, 0, 3);
+			enterGPane.add(vitField, 1, 3);
+			textFieldSettings(vitField);
+			// Extract and edit  user input
+			vitField.textProperty().addListener((observable, oldValue, newValue) -> {
+					int vit = Integer.parseInt(newValue);
+					ds3class.newVitality(vit);
+					ds3class.newLevelSohrt();
+			});
+			
+			// Strength
+			enterGPane.add(stgText, 0, 4);
+			enterGPane.add(stgField, 1, 4);
+			textFieldSettings(stgField);
+			// Extract and edit  user input
+			stgField.textProperty().addListener((observable, oldValue, newValue) -> {
+					int stg = Integer.parseInt(newValue);
+					ds3class.newStrentgh(stg);
+					ds3class.newLevelSohrt();
+			});
+
+			// Dexterity	
+			enterGPane.add(dexText, 0, 5);
+			enterGPane.add(dexField, 1, 5);
+			textFieldSettings(dexField);
+			// Extract and edit  user input
+			dexField.textProperty().addListener((observable, oldValue, newValue) -> {
+					int dex = Integer.parseInt(newValue);
+					ds3class.newDexterity(dex);
+					ds3class.newLevelSohrt();
+			});
+
+			// Intelligence
+			enterGPane.add(inteText, 0, 6);
+			enterGPane.add(inteField, 1, 6);
+			textFieldSettings(inteField);
+			// Extract and edit  user input
+			inteField.textProperty().addListener((observable, oldValue, newValue) -> {
+					int inte = Integer.parseInt(newValue);
+					ds3class.newIntelligence(inte);
+					ds3class.newLevelSohrt();
+			});
+
+			// Faith
+			enterGPane.add(fthText, 0, 7);
+			enterGPane.add(fthField, 1, 7);
+			textFieldSettings(fthField);
+			// Extract and edit  user input
+			fthField.textProperty().addListener((observable, oldValue, newValue) -> {
+					int fth = Integer.parseInt(newValue);
+					ds3class.newFaith(fth);
+					ds3class.newLevelSohrt();
+			});
+
+			// Luck
+			enterGPane.add(lckTect, 0, 8);
+			enterGPane.add(lckField, 1, 8);
+			textFieldSettings(lckField);
+			// Extract and edit  user input
+			lckField.textProperty().addListener((observable, oldValue, newValue) -> {
+					int lck = Integer.parseInt(newValue);
+					ds3class.newLuck(lck);
+					ds3class.newLevelSohrt();
+			});
+
+
+			//Adding the gridPane
 			selectPane.setLeft(enterGPane);
+			BorderPane.setMargin(enterGPane, new Insets(0, 80, 80, 30));
+
 
 			// Back exit layout
 			Button backButton3 = new Button("Back");
@@ -237,32 +348,34 @@ public class Main extends Application {
 			// Handling back and exit buttons
 			backButton3.setOnAction(e -> primaryStage.setScene(optimizerScene));
 			exitButton3.setOnAction(e -> Platform.exit());
-			
-			
+
+
 			// ======================================================================================================================================================
 
-			
-			// add custom styles
+
+			// Add custom styles
 			welocmeScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			toolScene.getStylesheets().add(getClass().getResource("MainMenu.css").toExternalForm());
 			optimizerScene.getStylesheets().add(getClass().getResource("MainMenu.css").toExternalForm());
 			selectScene.getStylesheets().add(getClass().getResource("Optimizer.css").toExternalForm());
-			
-			
+
+
 			// Set and showing the Welocme Menu scene
 			primaryStage.setTitle("Dark Souls Tools");
 			primaryStage.setScene(welocmeScene);
 			primaryStage.setResizable(false);// Cant resized
 			primaryStage.show();
 
-			
-			
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
 
+	
+	// Soundtrack function
 	public void playSonudtrack(String bip) {
 		hit = new Media(Paths.get(bip).toUri().toString());
 		mediaPlayer = new MediaPlayer(hit);
@@ -278,5 +391,24 @@ public class Main extends Application {
 		tempBox.getChildren().addAll(selectButton, editButton, showButton);
 		tempBox.setSpacing(15);
 		return tempBox;
+	}
+
+	// Size of textfields
+	public  void textFieldSettings(TextField field) {
+		field.setMaxWidth(33);
+		field.setSnapToPixel(false);// The textfield dont resize and hide and the user input
+		field.setOnKeyTyped(event ->{
+			// Only nunbers inmput 0-9
+			char input = event.getCharacter().charAt(0);
+			if (Character.isDigit(input) != true) {
+				event.consume();
+			}
+
+			// Only 2 numbers
+			int maxCharacters = 1;
+			if(field.getText().length() > maxCharacters) {
+				event.consume();
+			}
+		});
 	}
 }
