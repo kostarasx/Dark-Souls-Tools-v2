@@ -3,6 +3,8 @@ package application;
 
 import java.nio.file.Paths;
 
+import com.sun.javafx.geom.AreaOp.AddOp;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -31,17 +33,22 @@ import javafx.scene.media.MediaPlayer;
 
 public class Main extends Application {
 
-	static final double VOLUME = 0;
+	static final double VOLUME = 1.07;
 	ToggleGroup gameGroup;
 	MediaPlayer mediaPlayer;
 	Media hit;
-	ds3ClassOptimizer ds3class;
+	static ds3ClassOptimizer ds3class;
 
 	public static void main(String[] args) {
-
+		// Setting the ds3 optimizer object
+		ds3class = new ds3ClassOptimizer();
+		ds3class.setBasicStats();
+		ds3class.storeTheBaseStats();
+		ds3class.newLevelCreate();
+		ds3class.newLevelSohrt();
+		
 		launch(args);
 	}
-
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -152,12 +159,6 @@ public class Main extends Application {
 					VBox gameBox = new VBox();
 					selectGame.setSpacing(15);
 					if (gameGroup.getSelectedToggle() == ds3Button) {
-						// Setting the ds3 optimizer object
-						ds3class = new ds3ClassOptimizer();
-						ds3class.setBasicStats();
-						ds3class.storeTheBaseStats();
-						ds3class.newLevelCreate();
-						ds3class.newLevelSohrt();
 						//Addig feature buutons
 						gameBox = gameTools(selectStatsButton, editStatsButton, showStartButton);
 						optimizerPane.setCenter(gameBox);
@@ -198,9 +199,44 @@ public class Main extends Application {
 			selectPane.setTop(featureBox);
 			BorderPane.setMargin(featureBox, new Insets(50, 80, 80, 30));
 
+			// Showing the sorted classes bases on level
+
+			// Cattegories  Class Name and Level Labels
+			Label classText = new Label("Class");
+			classText.getStyleClass().add("label2");
+			Label levelText =new Label("Level");
+			levelText.getStyleClass().add("label2");
+
+			//Labels for showing class and level
+			Label[] classArrayLabel;
+			Label[] levelArrayLabel;
+
+			// Setting the class pane grid
+			GridPane showPane = new GridPane();
+			showPane.setVgap(10);
+			showPane.setHgap(35);			
+			
+			// Initialize the array of the labels
+			classArrayLabel = new Label[ds3class.NUMBER_OF_CLASSES];
+			levelArrayLabel = new Label[ds3class.NUMBER_OF_CLASSES];
+			for(int j = 0 ; j < ds3class.NUMBER_OF_CLASSES; j++) {
+				classArrayLabel[j] = new Label(ds3class.getspecificAllClasses(ds3class.getSpecificClassPointer(j)).getName());
+				levelArrayLabel[j] = new Label(String.valueOf(ds3class.getspecificAllClasses(ds3class.getSpecificClassPointer(j)).getSpecificStat(0))); 
+				showPane.add(classArrayLabel[j], 0, j + 1);
+				showPane.add(levelArrayLabel[j], 1, j + 1);
+			}
+			
+			// Adding labels to grid
+			showPane.add(classText, 0, 0);
+			showPane.add(levelText, 1, 0);
+			
 			// Showing the name of the skills
 
 			// Labels for skills
+			Label statText = new Label("Stat");
+			statText.getStyleClass().add("label2");
+			Label currentText = new Label("Current");
+			currentText.getStyleClass().add("label2");
 			Label vgrText = new Label ("Vigor");
 			Label attuText = new Label ("Attunement");
 			Label endText = new Label ("Endurance");
@@ -230,110 +266,148 @@ public class Main extends Application {
 			enterGPane.setVgap(10);
 			enterGPane.setHgap(35);
 
+			// Name of the cattegories
+			enterGPane.add(statText, 0, 0);
+			enterGPane.add(currentText, 1, 0);
+
 			// Vigor 
-			enterGPane.add(vgrText, 0, 0);
-			enterGPane.add(vgrField, 1, 0);
+			enterGPane.add(vgrText, 0, 1);
+			enterGPane.add(vgrField, 1, 1);
 			textFieldSettings(vgrField);
 			System.out.println();
 			// Extract and edit  user input
 			vgrField.textProperty().addListener((observable, oldValue, newValue) -> {
-				int vgr = Integer.parseInt(newValue);
-				ds3class.newVigor(vgr);
-				ds3class.newLevelSohrt();
+				try{
+					int vgr = Integer.parseInt(newValue);
+					ds3class.newVigor(vgr);
+					showShortStats(showPane, classArrayLabel, levelArrayLabel);
+				}catch(NumberFormatException e) {
+				}
+
 			});
 
 			// Attunement
-			enterGPane.add(attuText, 0, 1);
-			enterGPane.add(attuField, 1, 1);
+			enterGPane.add(attuText, 0, 2);
+			enterGPane.add(attuField, 1, 2);
 			textFieldSettings(attuField);
 			// Extract and edit  user input
 			attuField.textProperty().addListener((observable, oldValue, newValue) -> {
+				try{	
 					int att = Integer.parseInt(newValue);;
 					ds3class.newAttunemen(att);
-					ds3class.newLevelSohrt();
+					showShortStats(showPane, classArrayLabel, levelArrayLabel);
+				}catch(NumberFormatException e) {
+				}
+
 			});
 
 			// Endurance
-			enterGPane.add(endText, 0, 2);
-			enterGPane.add(endField, 1, 2);
+			enterGPane.add(endText, 0, 3);
+			enterGPane.add(endField, 1, 3);
 			textFieldSettings(endField);
 			// Extract and edit  user input
 			endField.textProperty().addListener((observable, oldValue, newValue) -> {
+				try{
 					int end = Integer.parseInt(newValue);
 					ds3class.newEndurance(end);
-					ds3class.newLevelSohrt();
-		    });
+					showShortStats(showPane, classArrayLabel, levelArrayLabel);
+				}catch(NumberFormatException e) {
+				}
+			});
 
 			// Vitality
-			enterGPane.add(vitText, 0, 3);
-			enterGPane.add(vitField, 1, 3);
+			enterGPane.add(vitText, 0, 4);
+			enterGPane.add(vitField, 1, 4);
 			textFieldSettings(vitField);
 			// Extract and edit  user input
 			vitField.textProperty().addListener((observable, oldValue, newValue) -> {
+				try{	
 					int vit = Integer.parseInt(newValue);
 					ds3class.newVitality(vit);
-					ds3class.newLevelSohrt();
+					showShortStats(showPane, classArrayLabel, levelArrayLabel);
+				}catch(NumberFormatException e) {
+				}
 			});
-			
+
 			// Strength
-			enterGPane.add(stgText, 0, 4);
-			enterGPane.add(stgField, 1, 4);
+			enterGPane.add(stgText, 0, 5);
+			enterGPane.add(stgField, 1, 5);
 			textFieldSettings(stgField);
 			// Extract and edit  user input
 			stgField.textProperty().addListener((observable, oldValue, newValue) -> {
+				try{	
 					int stg = Integer.parseInt(newValue);
 					ds3class.newStrentgh(stg);
-					ds3class.newLevelSohrt();
+					showShortStats(showPane, classArrayLabel, levelArrayLabel);
+				}catch(NumberFormatException e) {
+				}
+
 			});
 
 			// Dexterity	
-			enterGPane.add(dexText, 0, 5);
-			enterGPane.add(dexField, 1, 5);
+			enterGPane.add(dexText, 0, 6);
+			enterGPane.add(dexField, 1, 6);
 			textFieldSettings(dexField);
 			// Extract and edit  user input
 			dexField.textProperty().addListener((observable, oldValue, newValue) -> {
+				try{	
 					int dex = Integer.parseInt(newValue);
 					ds3class.newDexterity(dex);
-					ds3class.newLevelSohrt();
+					showShortStats(showPane, classArrayLabel, levelArrayLabel);
+				}catch(NumberFormatException e) {
+				}	
 			});
 
 			// Intelligence
-			enterGPane.add(inteText, 0, 6);
-			enterGPane.add(inteField, 1, 6);
+			enterGPane.add(inteText, 0, 7);
+			enterGPane.add(inteField, 1, 7);
 			textFieldSettings(inteField);
 			// Extract and edit  user input
 			inteField.textProperty().addListener((observable, oldValue, newValue) -> {
+				try{	
 					int inte = Integer.parseInt(newValue);
 					ds3class.newIntelligence(inte);
-					ds3class.newLevelSohrt();
+					showShortStats(showPane, classArrayLabel, levelArrayLabel);
+				}catch(NumberFormatException e) {
+				}	
 			});
 
 			// Faith
-			enterGPane.add(fthText, 0, 7);
-			enterGPane.add(fthField, 1, 7);
+			enterGPane.add(fthText, 0, 8);
+			enterGPane.add(fthField, 1, 8);
 			textFieldSettings(fthField);
 			// Extract and edit  user input
 			fthField.textProperty().addListener((observable, oldValue, newValue) -> {
+				try{	
 					int fth = Integer.parseInt(newValue);
 					ds3class.newFaith(fth);
-					ds3class.newLevelSohrt();
+					showShortStats(showPane, classArrayLabel, levelArrayLabel);
+				}catch(NumberFormatException e) {
+				}
 			});
 
 			// Luck
-			enterGPane.add(lckTect, 0, 8);
-			enterGPane.add(lckField, 1, 8);
+			enterGPane.add(lckTect, 0, 9);
+			enterGPane.add(lckField, 1, 9);
 			textFieldSettings(lckField);
 			// Extract and edit  user input
 			lckField.textProperty().addListener((observable, oldValue, newValue) -> {
+				try{	
 					int lck = Integer.parseInt(newValue);
 					ds3class.newLuck(lck);
-					ds3class.newLevelSohrt();
+					showShortStats(showPane, classArrayLabel, levelArrayLabel);
+				}catch(NumberFormatException e) {
+				}
 			});
 
-
-			//Adding the gridPane
+			// Adding the gridPane
 			selectPane.setLeft(enterGPane);
 			BorderPane.setMargin(enterGPane, new Insets(0, 80, 80, 30));
+
+			
+
+			//Adding the grid
+			selectPane.setCenter(showPane);
 
 
 			// Back exit layout
@@ -374,7 +448,7 @@ public class Main extends Application {
 
 	}
 
-	
+
 	// Soundtrack function
 	public void playSonudtrack(String bip) {
 		hit = new Media(Paths.get(bip).toUri().toString());
@@ -411,4 +485,19 @@ public class Main extends Application {
 			}
 		});
 	}
+	
+	public void showShortStats(GridPane showPane,Label[] classArrayLabel, Label[] levelArrayLabel) {
+		ds3class.newLevelCreate();
+		ds3class.newLevelSohrt();
+		for(int j = 0 ; j < ds3class.NUMBER_OF_CLASSES; j++) {
+			int pointer = ds3class.getSpecificClassPointer(j);
+			showPane.getChildren().remove(classArrayLabel[j]);
+			showPane.getChildren().remove(levelArrayLabel[j]);
+			classArrayLabel[j] = new Label(ds3class.getspecificAllClasses(pointer).getName());
+			levelArrayLabel[j] = new Label(String.valueOf(ds3class.getspecificAllClasses(pointer).getSpecificStat(0)));
+			showPane.add(classArrayLabel[j], 0, j + 1);
+			showPane.add(levelArrayLabel[j], 1, j + 1);
+	
+		}
+	}	
 }

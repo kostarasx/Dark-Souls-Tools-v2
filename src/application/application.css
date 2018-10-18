@@ -1,6 +1,7 @@
 /*The background picture of the main menu */
 .root{
-	-fx-background-image:url('file:E://Dropbox/Programming/Java/Project/Dark-Souls-Tools-v2/Image/welcomemenu.jpg');
+	/*-fx-background-image:url('file:E://Dropbox/Programming/Java/Project/Dark-Souls-Tools-v2/Image/welcomemenu.jpg');*/
+	-fx-background-image:url('file:/home/kostas/Dropbox/Programming/Java/Project/Dark-Souls-Tools-v2/Image/welcomemenu.jpg');	
 	-fx-background-repeat: no-repeat;
 	-fx-background-size: 100% 100%;
 }

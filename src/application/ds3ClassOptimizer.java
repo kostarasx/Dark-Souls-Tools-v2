@@ -26,7 +26,7 @@ public class ds3ClassOptimizer {
 
 	// Constructor
 	public ds3ClassOptimizer() {
-		allClasses = new startingClass[NUMBER_OF_STATS];// Create of the array of obj
+		allClasses = new startingClass[NUMBER_OF_CLASSES];// Create of the array of obj
 		newLevel = new int[NUMBER_OF_CLASSES];
 		classPointer = new int[NUMBER_OF_CLASSES];
 		userChoice = new int[NUMBER_OF_STATS];
@@ -288,7 +288,14 @@ public class ds3ClassOptimizer {
 				// Set the new Vigor
 				allClasses[i].setSpecificStat(1, vgr);
 			}
-
+			// Dont care and  set to base stat
+			else if (vgr == 0) {
+				minusLevel = allClasses[i].getSpecificStat(1) - allClasses[i].getSpecificBaseStats(1);
+				newLevel = allClasses[i].getSpecificStat(0) - minusLevel;
+				allClasses[i].setSpecificStat(0, newLevel);
+				// Set the new Vigor
+				allClasses[i].setSpecificStat(1, allClasses[i].getSpecificBaseStats(1));
+			}
 		}
 	}
 
@@ -316,6 +323,14 @@ public class ds3ClassOptimizer {
 				allClasses[i].setSpecificStat(0, newLevel);
 				// Set the new Attunement
 				allClasses[i].setSpecificStat(2, att);
+			}
+			// Dont care and  set to base stat
+			else if (att == 0) {
+				minusLevel = allClasses[i].getSpecificStat(2) - allClasses[i].getSpecificBaseStats(2);
+				newLevel = allClasses[i].getSpecificStat(0) - minusLevel;
+				allClasses[i].setSpecificStat(0, newLevel);
+				// Set the new Attunement
+				allClasses[i].setSpecificStat(2, allClasses[i].getSpecificBaseStats(2));
 			}
 		}
 	}
@@ -345,6 +360,14 @@ public class ds3ClassOptimizer {
 				// Set the new Endurance
 				allClasses[i].setSpecificStat(3, end);
 			}
+			// Dont care and  set to base stat
+			else if (end == 0) {
+				minusLevel = allClasses[i].getSpecificStat(3) - allClasses[i].getSpecificBaseStats(3);
+				newLevel = allClasses[i].getSpecificStat(0) - minusLevel;
+				allClasses[i].setSpecificStat(0, newLevel);
+				// Set the new Endurance
+				allClasses[i].setSpecificStat(3, allClasses[i].getSpecificBaseStats(3));
+			}
 		}
 	}
 
@@ -372,6 +395,14 @@ public class ds3ClassOptimizer {
 				allClasses[i].setSpecificStat(0, newLevel);
 				// Set the new Vitality
 				allClasses[i].setSpecificStat(4, vit);
+			}
+			// Dont care and  set to base stat
+			else if (vit == 0) {
+				minusLevel = allClasses[i].getSpecificStat(4) - allClasses[i].getSpecificBaseStats(4);
+				newLevel = allClasses[i].getSpecificStat(0) - minusLevel;
+				allClasses[i].setSpecificStat(0, newLevel);
+				// Set the new Vittality
+				allClasses[i].setSpecificStat(4, allClasses[i].getSpecificBaseStats(4));
 			}
 		}
 	}
@@ -401,6 +432,14 @@ public class ds3ClassOptimizer {
 				// Set the new Strength
 				allClasses[i].setSpecificStat(5, stg);
 			}
+			// Dont care and  set to base stat
+			else if (stg == 0) {
+				minusLevel = allClasses[i].getSpecificStat(5) - allClasses[i].getSpecificBaseStats(5);
+				newLevel = allClasses[i].getSpecificStat(0) - minusLevel;
+				allClasses[i].setSpecificStat(0, newLevel);
+				// Set the new Strength
+				allClasses[i].setSpecificStat(5, allClasses[i].getSpecificBaseStats(5));
+			}
 		}
 	}
 
@@ -428,6 +467,14 @@ public class ds3ClassOptimizer {
 				allClasses[i].setSpecificStat(0, newLevel);
 				// Set the new Dexterity
 				allClasses[i].setSpecificStat(6, dex);
+			}
+			// Dont care and  set to base stat
+			else if (dex == 0) {
+				minusLevel = allClasses[i].getSpecificStat(6) - allClasses[i].getSpecificBaseStats(6);
+				newLevel = allClasses[i].getSpecificStat(0) - minusLevel;
+				allClasses[i].setSpecificStat(0, newLevel);
+				// Set the new Dexterity
+				allClasses[i].setSpecificStat(6, allClasses[i].getSpecificBaseStats(6));
 			}
 		}
 	}
@@ -457,7 +504,16 @@ public class ds3ClassOptimizer {
 				// Set the new Intelligence
 				allClasses[i].setSpecificStat(7, inte);
 			}
+			// Dont care and  set to base stat
+			else if (inte == 0) {
+				minusLevel = allClasses[i].getSpecificStat(7) - allClasses[i].getSpecificBaseStats(7);
+				newLevel = allClasses[i].getSpecificStat(0) - minusLevel;
+				allClasses[i].setSpecificStat(0, newLevel);
+				// Set the new Intelligence
+				allClasses[i].setSpecificStat(7, allClasses[i].getSpecificBaseStats(7));
+			}
 		}
+		
 	}
 
 	// Calculate new level when Faith change
@@ -473,7 +529,7 @@ public class ds3ClassOptimizer {
 				addLevel = fth - allClasses[i].getSpecificStat(8);//
 				newLevel = allClasses[i].getSpecificStat(0) + addLevel;
 				allClasses[i].setSpecificStat(0, newLevel);
-				// Set the new Intelligence
+				// Set the new Faith
 				allClasses[i].setSpecificStat(8, fth);
 			}
 			// Decrease Faith and 0 dont care
@@ -485,6 +541,15 @@ public class ds3ClassOptimizer {
 				// Set the new Faith
 				allClasses[i].setSpecificStat(8, fth);
 			}
+			// Dont care and  set to base stat
+			else if (fth == 0) {
+				minusLevel = allClasses[i].getSpecificStat(8) - allClasses[i].getSpecificBaseStats(8);
+				newLevel = allClasses[i].getSpecificStat(0) - minusLevel;
+				allClasses[i].setSpecificStat(0, newLevel);
+				// Set the new Faith
+				allClasses[i].setSpecificStat(8, allClasses[i].getSpecificBaseStats(8));
+			}
+			
 		}
 	}
 
@@ -512,6 +577,14 @@ public class ds3ClassOptimizer {
 				allClasses[i].setSpecificStat(0, newLevel);
 				// Set the new Luck
 				allClasses[i].setSpecificStat(9, lck);
+			}
+			// Dont care and  set to base stat
+			else if (lck == 0) {
+				minusLevel = allClasses[i].getSpecificStat(9) - allClasses[i].getSpecificBaseStats(9);
+				newLevel = allClasses[i].getSpecificStat(0) - minusLevel;
+				allClasses[i].setSpecificStat(0, newLevel);
+				// Set the new Luck
+				allClasses[i].setSpecificStat(9, allClasses[i].getSpecificBaseStats(9));
 			}
 		}
 	}
